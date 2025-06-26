@@ -25,7 +25,7 @@ async function initializeDatabase() {
       CREATE TABLE IF NOT EXISTS products(
         id SERIAL PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
-        image VARCHAR(100) NOT NULL,
+        image VARCHAR(500) NOT NULL,
         price NUMERIC(9) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
