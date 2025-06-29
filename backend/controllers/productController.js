@@ -51,7 +51,7 @@ export const createProduct = async (req, res) => {
 
 		res.status(201).json({ success: true, data: createdProduct[0] });
 	} catch (error) {
-		console.log("Error createProducts", error);
+		console.log("Error createProduct", error);
 
 		res.status(500).json({ success: false, message: "Internal server error" });
 	}
@@ -95,7 +95,7 @@ export const deleteProduct = async (req, res) => {
 
 		res.status(200).json({ success: true, data: deleteProduct[0] });
 	} catch (error) {
-		console.log("Error updateProduct", error);
+		console.log("Error deleteProduct", error);
 
 		res.status(500).json({ success: false, message: "Internal server error" });
 	}
