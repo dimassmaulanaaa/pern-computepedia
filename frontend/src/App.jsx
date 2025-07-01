@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 import { useThemeStore } from "./store/useThemeStore";
 
@@ -17,6 +18,8 @@ function App() {
 				<Route path="/" element={<HomePage />} />
 				<Route path="/product/:id" element={<ProductPage />} />
 			</Routes>
+
+			<Toaster />
 		</div>
 	);
 }
