@@ -6,7 +6,7 @@ import EditProductCard from "../components/EditProductCard";
 
 function EditProductPage() {
 	useEffect(() => {
-		document.title = "Edit Product | MiniCommerce";
+		document.title = "Edit Product | Computepedia";
 	}, []);
 
 	return (

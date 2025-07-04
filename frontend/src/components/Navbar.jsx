@@ -1,5 +1,5 @@
 import { Link, useResolvedPath } from "react-router-dom";
-import { ShoppingCartIcon, ShoppingBagIcon } from "lucide-react";
+import { LaptopMinimal, ShoppingCart } from "lucide-react";
 
 import ThemeSelector from "./ThemeSelector";
 
@@ -15,9 +15,9 @@ function Navbar() {
 					<div className="flex-1 lg:flex-none">
 						<Link to="/" className="hover:opacity-80 transition-opacity">
 							<div className="flex items-center gap-2">
-								<ShoppingCartIcon className="size-9 text-primary" />
+								<LaptopMinimal className="size-9 text-primary" />
 								<span className="font-semibold font-mono tracking-widest text-2xl px-1 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
-									MiniCommerce
+									Computepedia
 								</span>
 							</div>
 						</Link>
@@ -30,7 +30,7 @@ function Navbar() {
 						{isHomePage && (
 							<div className="indicator">
 								<div className="p-2 rounded-full hover:bg-base-200 transition-colors">
-									<ShoppingBagIcon className="size-5" />
+									<ShoppingCart className="size-5" />
 									<span className="badge badge-sm badge-primary indicator-item">5</span>
 								</div>
 							</div>

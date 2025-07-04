@@ -10,7 +10,7 @@ function HomePage() {
 	const { products, loading, error, fetchProducts } = useProductStore();
 
 	useEffect(() => {
-		document.title = "Home | MiniCommerce";
+		document.title = "Home | Computepedia";
 	}, []);
 
 	useEffect(() => {
