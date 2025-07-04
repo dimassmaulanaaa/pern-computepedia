@@ -10,6 +10,10 @@ function HomePage() {
 	const { products, loading, error, fetchProducts } = useProductStore();
 
 	useEffect(() => {
+		document.title = "Home | MiniCommerce";
+	}, []);
+
+	useEffect(() => {
 		fetchProducts();
 	}, [fetchProducts]);
 
