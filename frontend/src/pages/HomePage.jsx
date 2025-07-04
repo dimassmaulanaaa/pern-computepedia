@@ -17,7 +17,7 @@ function HomePage() {
 		<main className="max-w-6xl mx-auto px-4 py-8">
 			<div className="flex justify-between items-center mb-8">
 				<button
-					className="btn btn-primary rounded-full"
+					className="btn btn-primary"
 					onClick={() => document.getElementById("add-product-modal").showModal()}
 				>
 					<PlusCircleIcon className="size-5" />
