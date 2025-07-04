@@ -6,6 +6,7 @@ const BASE_URL = "http://localhost:3000";
 
 export const useProductStore = create((set, get) => ({
 	products: [],
+	currentProduct: null,
 	loading: false,
 	error: null,
 
@@ -31,6 +32,23 @@ export const useProductStore = create((set, get) => ({
 		}
 	},
 
+	fetchProduct: async (id) => {
+		set({ loading: true });
+		try {
+			const response = await axios.get(`${BASE_URL}/api/products/${id}`);
+			set({
+				currentProduct: response.data.data,
+				formData: response.data.data,
+				error: null,
+			});
+		} catch (error) {
+			console.log("Error fetchProduct", error);
+			set({ error: "Something went wrong", currentProduct: null });
+		} finally {
+			set({ loading: false });
+		}
+	},
+
 	addProduct: async (e) => {
 		e.preventDefault();
 		set({ loading: true });
@@ -44,6 +62,21 @@ export const useProductStore = create((set, get) => ({
 			document.getElementById("add-product-modal").close();
 		} catch (error) {
 			console.log("Error addProduct", error);
+			toast.error("Something went wrong");
+		} finally {
+			set({ loading: false });
+		}
+	},
+
+	updateProduct: async (id) => {
+		set({ loading: true });
+		try {
+			const { formData } = get();
+			const response = await axios.put(`${BASE_URL}/api/products/${id}`, formData);
+			set({ currentProduct: response.data.data });
+			toast.success("Product updated successfully");
+		} catch (error) {
+			console.log("Error updateProduct", error);
 			toast.error("Something went wrong");
 		} finally {
 			set({ loading: false });
