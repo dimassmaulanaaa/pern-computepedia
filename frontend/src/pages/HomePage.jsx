@@ -1,5 +1,6 @@
-import { useEffect } from "react";
-import { PlusCircleIcon, RefreshCwIcon, PackageIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
+import { PlusCircleIcon, PackageIcon } from "lucide-react";
 
 import { useProductStore } from "../store/useProductStore";
 
@@ -8,27 +9,33 @@ import AddProductModal from "../components/AddProductModal";
 
 function HomePage() {
 	const { products, loading, error, fetchProducts } = useProductStore();
+	const [searchTerm, setSearchTerm] = useState("");
+	const [debouncedSearchTerm] = useDebounce(searchTerm, 500);
 
 	useEffect(() => {
 		document.title = "Home | Computepedia";
 	}, []);
 
 	useEffect(() => {
-		fetchProducts();
-	}, [fetchProducts]);
+		fetchProducts(debouncedSearchTerm);
+	}, [fetchProducts, debouncedSearchTerm]);
 
 	return (
 		<main className="max-w-6xl mx-auto px-4 py-8">
 			<div className="flex justify-between items-center mb-8">
+				<input
+					type="search"
+					placeholder="Search products..."
+					className="input input-bordered mr-1 w-52 md:w-full md:max-w-xs"
+					value={searchTerm}
+					onChange={(e) => setSearchTerm(e.target.value)}
+				/>
 				<button
 					className="btn btn-primary"
 					onClick={() => document.getElementById("add-product-modal").showModal()}
 				>
-					<PlusCircleIcon className="size-5" />
+					<PlusCircleIcon className="size-4 md:size-5" />
 					Add Product
-				</button>
-				<button className="btn btn-ghost btn-circle" onClick={fetchProducts}>
-					<RefreshCwIcon className="size-5" />
 				</button>
 			</div>
 

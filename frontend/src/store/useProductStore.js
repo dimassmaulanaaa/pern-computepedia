@@ -19,10 +19,11 @@ export const useProductStore = create((set, get) => ({
 	setFormData: (formData) => set({ formData }),
 	resetForm: () => set({ formData: { name: "", price: "", image: "" } }),
 
-	fetchProducts: async () => {
+	fetchProducts: async (searchTerm = "") => {
 		set({ loading: true });
 		try {
-			const response = await axios.get(`${BASE_URL}/api/products`);
+			const url = searchTerm ? `${BASE_URL}/api/products?search=${searchTerm}` : `${BASE_URL}/api/products`;
+			const response = await axios.get(url);
 			set({ products: response.data.data, error: null });
 		} catch (error) {
 			if (error.status == 429) set({ error: "Too many request", products: [] });
