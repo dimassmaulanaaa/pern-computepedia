@@ -9,6 +9,15 @@ export const productModel = {
 		return products;
 	},
 
+	async searchByName(searchTerm) {
+		const products = await sql`
+        SELECT * FROM products WHERE
+        name ILIKE ${"%" + searchTerm + "%"}
+        ORDER BY created_at DESC
+      `;
+		return products;
+	},
+
 	async findById(id) {
 		const product = await sql`
       SELECT * FROM products WHERE id = ${id}

@@ -1,8 +1,16 @@
 import { productModel } from "../models/productModel.js";
 
-export const getProducts = async (_req, res) => {
+export const getProducts = async (req, res) => {
 	try {
-		const products = await productModel.findAll();
+		const { search } = req.query;
+		let products = [];
+
+		if (search) {
+			products = await productModel.searchByName(search);
+		} else {
+			products = await productModel.findAll();
+		}
+
 		res.status(200).json({ success: true, data: products });
 	} catch (error) {
 		console.log("Error getProducts", error);
