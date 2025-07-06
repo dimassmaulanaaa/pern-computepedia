@@ -35,14 +35,14 @@ export const getProduct = async (req, res) => {
 };
 
 export const createProduct = async (req, res) => {
-	const { name, price, image } = req.body;
+	const { name, price, stock, description, image, category_id } = req.body;
 
-	if (!name || !price || !image) {
+	if (!name || !price || !stock || !description || !image || !category_id) {
 		return res.status(400).json({ success: false, message: "All fields are required" });
 	}
 
 	try {
-		const newProduct = await productModel.create({ name, price, image });
+		const newProduct = await productModel.create({ name, price, stock, description, image, category_id });
 		res.status(201).json({ success: true, data: newProduct });
 	} catch (error) {
 		console.log("Error createProduct", error);
@@ -52,10 +52,17 @@ export const createProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
 	const { id } = req.params;
-	const { name, image, price } = req.body;
+	const { name, price, stock, description, image, category_id } = req.body;
 
 	try {
-		const updatedProduct = await productModel.update(id, { name, image, price });
+		const updatedProduct = await productModel.update(id, {
+			name,
+			price,
+			stock,
+			description,
+			image,
+			category_id,
+		});
 
 		if (!updatedProduct) {
 			return res.status(404).json({ success: false, message: "Product not found" });
