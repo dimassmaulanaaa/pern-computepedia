@@ -37,13 +37,13 @@ export const getProduct = async (req, res) => {
 export const createProduct = async (req, res) => {
 	const { name, price, stock, description, image, category_id } = req.body;
 
-	if (!name || !price || !stock || !description || !image || !category_id) {
-		return res.status(400).json({ success: false, message: "All fields are required" });
+	if (!name.trim() || !price.trim() || !stock.trim() || !description.trim() || !image.trim() || !category_id) {
+		return res.status(400).json({ success: false, message: "All fields cannot be empty" });
 	}
 
 	try {
-		const newProduct = await productModel.create({ name, price, stock, description, image, category_id });
-		res.status(201).json({ success: true, data: newProduct });
+		const createdProduct = await productModel.create({ name, price, stock, description, image, category_id });
+		res.status(201).json({ success: true, data: createdProduct });
 	} catch (error) {
 		console.log("Error createProduct", error);
 		res.status(500).json({ success: false, message: "Internal server error" });
