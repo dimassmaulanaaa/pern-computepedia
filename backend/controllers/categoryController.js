@@ -1,6 +1,6 @@
 import { categoryModel } from "../models/categoryModel.js";
 
-export const getCategories = async (req, res) => {
+export const getCategories = async (_, res) => {
 	try {
 		const categories = await categoryModel.findAll();
 		res.status(200).json({ success: true, data: categories });
@@ -29,7 +29,7 @@ export const createCategory = async (req, res) => {
 		if (error.code === "23505") {
 			return res.status(409).json({
 				success: false,
-				message: `Category '${req.body.name}' already exists.`,
+				message: `Category '${req.body.name}' already exists`,
 			});
 		} else {
 			return res.status(500).json({

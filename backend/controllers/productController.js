@@ -37,7 +37,14 @@ export const getProduct = async (req, res) => {
 export const createProduct = async (req, res) => {
 	const { name, price, stock, description, image, category_id } = req.body;
 
-	if (!name.trim() || !price.trim() || !stock.trim() || !description.trim() || !image.trim() || !category_id) {
+	if (
+		!name.trim() ||
+		!price.trim() ||
+		!stock.trim() ||
+		!description.trim() ||
+		!image.trim() ||
+		!category_id.trim()
+	) {
 		return res.status(400).json({ success: false, message: "All fields cannot be empty" });
 	}
 
@@ -53,6 +60,17 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
 	const { id } = req.params;
 	const { name, price, stock, description, image, category_id } = req.body;
+
+	if (
+		!name.trim() ||
+		!price.trim() ||
+		!stock.trim() ||
+		!description.trim() ||
+		!image.trim() ||
+		!category_id.trim()
+	) {
+		return res.status(400).json({ success: false, message: "All fields cannot be empty" });
+	}
 
 	try {
 		const updatedProduct = await productModel.update(id, {
