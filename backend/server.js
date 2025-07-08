@@ -27,17 +27,17 @@ app.use(async (req, res, next) => {
 
 		if (decision.isDenied()) {
 			if (decision.reason.isRateLimit()) {
-				res.status(429).json({ error: "Too many request" });
+				res.status(429).json({ message: "Too many request" });
 			} else if (decision.reason.isBot()) {
-				res.status(403).json({ error: "Bot access denied" });
+				res.status(403).json({ message: "Bot access denied" });
 			} else {
-				res.status(403).json({ error: "Forbidden" });
+				res.status(403).json({ message: "Forbidden" });
 			}
 			return;
 		}
 
 		if (decision.results.some((result) => result.reason.isBot() && result.reason.isSpoofed())) {
-			res.status(403).json({ error: "Spoofed bot detected" });
+			res.status(403).json({ message: "Spoofed bot detected" });
 			return;
 		}
 
