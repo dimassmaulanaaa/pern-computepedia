@@ -7,27 +7,44 @@ const BASE_URL = "http://localhost:3000";
 export const useProductStore = create((set, get) => ({
 	products: [],
 	currentProduct: null,
+
+	categories: [],
+
 	loading: false,
 	error: null,
 
 	formData: {
 		name: "",
 		price: "",
+		stock: "",
+		description: "",
 		image: "",
+		category_id: "",
 	},
 
 	setFormData: (formData) => set({ formData }),
-	resetForm: () => set({ formData: { name: "", price: "", image: "" } }),
+	resetForm: () =>
+		set({
+			formData: {
+				name: "",
+				price: "",
+				stock: "",
+				description: "",
+				image: "",
+				category_id: "",
+			},
+		}),
 
+	// PRODUCTS
 	fetchProducts: async (searchTerm = "") => {
 		set({ loading: true });
 		try {
 			const url = searchTerm ? `${BASE_URL}/api/products?search=${searchTerm}` : `${BASE_URL}/api/products`;
 			const response = await axios.get(url);
 			set({ products: response.data.data, error: null });
+			get().resetForm();
 		} catch (error) {
-			if (error.status == 429) set({ error: "Too many request", products: [] });
-			else set({ error: "Something went wrong", products: [] });
+			set({ error: error.response.data.message, products: [] });
 		} finally {
 			set({ loading: false });
 		}
@@ -43,8 +60,7 @@ export const useProductStore = create((set, get) => ({
 				error: null,
 			});
 		} catch (error) {
-			console.log("Error fetchProduct", error);
-			set({ error: "Something went wrong", currentProduct: null });
+			set({ error: error.response.data.message, currentProduct: null });
 		} finally {
 			set({ loading: false });
 		}
@@ -57,13 +73,12 @@ export const useProductStore = create((set, get) => ({
 		try {
 			const { formData } = get();
 			await axios.post(`${BASE_URL}/api/products`, formData);
+			document.getElementById("add-product-modal").close();
 			await get().fetchProducts();
 			get().resetForm();
 			toast.success("Product added successfully");
-			document.getElementById("add-product-modal").close();
 		} catch (error) {
-			console.log("Error addProduct", error);
-			toast.error("Something went wrong");
+			toast.error(error.response.data.message);
 		} finally {
 			set({ loading: false });
 		}
@@ -77,8 +92,7 @@ export const useProductStore = create((set, get) => ({
 			set({ currentProduct: response.data.data });
 			toast.success("Product updated successfully");
 		} catch (error) {
-			console.log("Error updateProduct", error);
-			toast.error("Something went wrong");
+			toast.error(error.response.data.message);
 		} finally {
 			set({ loading: false });
 		}
@@ -88,12 +102,65 @@ export const useProductStore = create((set, get) => ({
 		set({ loading: true });
 		try {
 			await axios.delete(`${BASE_URL}/api/products/${id}`);
-			set((prev) => ({ products: prev.products.filter((product) => product.id !== id) }));
+			set((prev) => ({
+				products: prev.products.filter((product) => product.id !== id),
+			}));
 			get().resetForm();
 			toast.success("Product deleted successfully");
 		} catch (error) {
-			console.log("Error deleteProduct", error);
-			toast.error("Something went wrong");
+			toast.error(error.response.data.message);
+		} finally {
+			set({ loading: false });
+		}
+	},
+
+	// CATEGORIES
+	fetchCategories: async () => {
+		set({ loading: true });
+
+		try {
+			const response = await axios.get(`${BASE_URL}/api/categories`);
+			set({ categories: response.data.data, error: null });
+		} catch (error) {
+			set({ error: error.response.data.message, categories: [] });
+		} finally {
+			set({ loading: false });
+		}
+	},
+
+	addCategory: async (e) => {
+		e.preventDefault();
+		set({ loading: true });
+
+		try {
+			const { formData } = get();
+			await axios.post(`${BASE_URL}/api/categories`, formData);
+			document.getElementById("add-category-modal").close();
+			await get().fetchCategories();
+			get().resetForm();
+			toast.success("Category added successfully");
+		} catch (error) {
+			document.getElementById("add-category-modal").close();
+			get().resetForm();
+			toast.error(error.response.data.message);
+		} finally {
+			set({ loading: false });
+		}
+	},
+
+	deleteCategory: async (id) => {
+		set({ loading: true });
+		try {
+			await axios.delete(`${BASE_URL}/api/categories/${id}`);
+			set((prev) => ({
+				categories: prev.categories.filter((category) => category.id !== id),
+			}));
+			get().resetForm();
+			document.getElementById("add-category-modal").close();
+			toast.success("Category deleted successfully");
+		} catch (error) {
+			document.getElementById("add-category-modal").close();
+			toast.error(error.response.data.message);
 		} finally {
 			set({ loading: false });
 		}

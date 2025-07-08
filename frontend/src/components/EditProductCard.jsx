@@ -4,15 +4,32 @@ import { SaveIcon, Trash2Icon } from "lucide-react";
 
 import { useProductStore } from "../store/useProductStore";
 
+import ErrorAlert from "./ErrorAlert";
+import LoadingSpinner from "./LoadingSpinner";
+
 function EditProductCard() {
-	const { currentProduct, loading, error, formData, setFormData, fetchProduct, updateProduct, deleteProduct } =
-		useProductStore();
+	const {
+		currentProduct,
+		categories,
+		loading,
+		error,
+		formData,
+		setFormData,
+		fetchProduct,
+		updateProduct,
+		deleteProduct,
+		fetchCategories,
+	} = useProductStore();
 	const navigate = useNavigate();
 	const { id } = useParams();
 
 	useEffect(() => {
 		fetchProduct(id);
 	}, [fetchProduct, id]);
+
+	useEffect(() => {
+		fetchCategories();
+	}, [fetchCategories]);
 
 	const handleDelete = async () => {
 		if (window.confirm("Are you sure you want to delete this product?")) {
@@ -22,19 +39,11 @@ function EditProductCard() {
 	};
 
 	if (loading) {
-		return (
-			<div className="flex justify-center items-center min-h-[75vh]">
-				<div className="loading loading-spinner loading-lg" />
-			</div>
-		);
+		return <LoadingSpinner />;
 	}
 
 	if (error) {
-		return (
-			<div className="max-w-5xl mx-auto px-4">
-				<div className="alert alert-error">{error}</div>
-			</div>
-		);
+		return <ErrorAlert />;
 	}
 
 	return (
@@ -56,7 +65,7 @@ function EditProductCard() {
 						}}
 						className="space-y-5"
 					>
-						{/* PRODUCT NAME */}
+						{/* PRODUCT NAME INPUT*/}
 						<div className="form-control">
 							<label className="label">
 								<span className="label-text text-base font-medium">Product Name</span>
@@ -70,7 +79,7 @@ function EditProductCard() {
 							/>
 						</div>
 
-						{/* PRODUCT PRICE */}
+						{/* PRODUCT PRICE INPUT*/}
 						<div className="form-control">
 							<label className="label">
 								<span className="label-text text-base font-medium">Price</span>
@@ -85,7 +94,37 @@ function EditProductCard() {
 							/>
 						</div>
 
-						{/* PRODUCT IMAGE URL */}
+						{/* PRODUCT STOCK INPUT*/}
+						<div className="form-control">
+							<label className="label">
+								<span className="label-text text-base font-medium">Stock</span>
+							</label>
+							<input
+								type="number"
+								min="1"
+								placeholder="99"
+								className="input input-bordered w-full"
+								value={formData.stock}
+								onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
+							/>
+						</div>
+
+						{/* PRODUCT DESCRIPTION INPUT*/}
+						<div className="form-control">
+							<label className="label">
+								<span className="label-text text-base font-medium">Description</span>
+							</label>
+							<textarea
+								type="text"
+								placeholder="Enter product description"
+								rows={9}
+								className="textarea textarea-bordered w-full"
+								value={formData.description}
+								onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+							></textarea>
+						</div>
+
+						{/* PRODUCT IMAGE URL INPUT*/}
 						<div className="form-control">
 							<label className="label">
 								<span className="label-text text-base font-medium">Image URL</span>
@@ -97,6 +136,27 @@ function EditProductCard() {
 								value={formData.image}
 								onChange={(e) => setFormData({ ...formData, image: e.target.value })}
 							/>
+						</div>
+
+						{/* PRODUCT CATEGORY INPUT*/}
+						<div className="form-control">
+							<label className="label">
+								<span className="label-text text-base font-medium">Category</span>
+							</label>
+							<select
+								className="select select-bordered w-full"
+								value={formData.category_id}
+								onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
+							>
+								<option value="" disabled>
+									Select a category
+								</option>
+								{categories.map((category) => (
+									<option key={category.id} value={category.id}>
+										{category.name}
+									</option>
+								))}
+							</select>
 						</div>
 
 						{/* FORM ACTIONS */}
