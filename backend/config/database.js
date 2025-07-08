@@ -1,5 +1,5 @@
-import { neon } from "@neondatabase/serverless";
 import dotenv from "dotenv";
+import { neon } from "@neondatabase/serverless";
 
 dotenv.config();
 
@@ -18,7 +18,6 @@ export const initializeDatabase = async () => {
         name VARCHAR(100) NOT NULL,
         password VARCHAR(100) NOT NULL,
         role VARCHAR(15) NOT NULL DEFAULT 'admin',
-        token VARCHAR(100) NULL,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       )
     `;
@@ -40,7 +39,7 @@ export const initializeDatabase = async () => {
         description TEXT NOT NULL,
         image VARCHAR(300) NOT NULL,
         user_id INTEGER,
-        category_id INTEGER NOT NULL,
+        category_id INTEGER,
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 
         CONSTRAINT fk_user

@@ -1,13 +1,12 @@
+import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-import dotenv from "dotenv";
-
 import { aj } from "./lib/arcjet.js";
 import { initializeDatabase } from "./config/database.js";
-import productRoutes from "./routes/productRoutes.js";
-import categoryRoutes from "./routes/categoryRoutes.js";
+import publicApiRouter from "./routes/publicApiRoutes.js";
+import protectedApiRouter from "./routes/protectedApiRoutes.js";
 
 dotenv.config();
 
@@ -49,8 +48,8 @@ app.use(async (req, res, next) => {
 	}
 });
 
-app.use("/api/products", productRoutes);
-app.use("/api/categories", categoryRoutes);
+app.use(publicApiRouter);
+app.use(protectedApiRouter);
 
 initializeDatabase().then(() => {
 	app.listen(PORT, HOST, () => {
