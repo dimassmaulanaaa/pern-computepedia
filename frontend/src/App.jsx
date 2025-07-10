@@ -1,26 +1,32 @@
 import { Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
-import { useThemeStore } from "./store/useThemeStore";
-
-import Navbar from "./components/Navbar";
-
+import PublicLayout from "./pages/PublicLayout";
+import ProtectedLayout from "./pages/ProtectedLayout";
+import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import EditProductPage from "./pages/EditProductPage";
 
 function App() {
-	const { theme } = useThemeStore();
 	return (
-		<div className="min-h-screen bg-base-200 transition-colors duration-300" data-theme={theme}>
-			<Navbar />
-
+		<>
 			<Routes>
-				<Route path="/" element={<HomePage />} />
-				<Route path="/product/:id" element={<EditProductPage />} />
+				{/* PUBLIC ROUTES */}
+				<Route element={<PublicLayout />}>
+					<Route path="/login" element={<LoginPage />} />
+					<Route path="/register" element={<RegisterPage />} />
+				</Route>
+
+				{/* PROTECTED ROUTES */}
+				<Route element={<ProtectedLayout />}>
+					<Route path="/" element={<HomePage />} />
+					<Route path="/product/:id" element={<EditProductPage />} />
+				</Route>
 			</Routes>
 
 			<Toaster />
-		</div>
+		</>
 	);
 }
 

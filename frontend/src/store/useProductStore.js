@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import axios from "axios";
 import toast from "react-hot-toast";
+
+import apiClient from "../lib/axios";
 
 const BASE_URL = "http://localhost:3000";
 
@@ -40,7 +41,7 @@ export const useProductStore = create((set, get) => ({
 		set({ loading: true });
 		try {
 			const url = searchTerm ? `${BASE_URL}/api/products?search=${searchTerm}` : `${BASE_URL}/api/products`;
-			const response = await axios.get(url);
+			const response = await apiClient.get(url);
 			set({ products: response.data.data, error: null });
 			get().resetForm();
 		} catch (error) {
@@ -53,7 +54,7 @@ export const useProductStore = create((set, get) => ({
 	fetchProduct: async (id) => {
 		set({ loading: true });
 		try {
-			const response = await axios.get(`${BASE_URL}/api/products/${id}`);
+			const response = await apiClient.get(`${BASE_URL}/api/products/${id}`);
 			set({
 				currentProduct: response.data.data,
 				formData: response.data.data,
@@ -69,10 +70,9 @@ export const useProductStore = create((set, get) => ({
 	addProduct: async (e) => {
 		e.preventDefault();
 		set({ loading: true });
-
 		try {
 			const { formData } = get();
-			await axios.post(`${BASE_URL}/api/products`, formData);
+			await apiClient.post(`${BASE_URL}/api/products`, formData);
 			document.getElementById("add-product-modal").close();
 			await get().fetchProducts();
 			get().resetForm();
@@ -88,7 +88,7 @@ export const useProductStore = create((set, get) => ({
 		set({ loading: true });
 		try {
 			const { formData } = get();
-			const response = await axios.put(`${BASE_URL}/api/products/${id}`, formData);
+			const response = await apiClient.put(`${BASE_URL}/api/products/${id}`, formData);
 			set({ currentProduct: response.data.data });
 			toast.success("Product updated successfully");
 		} catch (error) {
@@ -101,7 +101,7 @@ export const useProductStore = create((set, get) => ({
 	deleteProduct: async (id) => {
 		set({ loading: true });
 		try {
-			await axios.delete(`${BASE_URL}/api/products/${id}`);
+			await apiClient.delete(`${BASE_URL}/api/products/${id}`);
 			set((prev) => ({
 				products: prev.products.filter((product) => product.id !== id),
 			}));
@@ -119,7 +119,7 @@ export const useProductStore = create((set, get) => ({
 		set({ loading: true });
 
 		try {
-			const response = await axios.get(`${BASE_URL}/api/categories`);
+			const response = await apiClient.get(`${BASE_URL}/api/categories`);
 			set({ categories: response.data.data, error: null });
 		} catch (error) {
 			set({ error: error.response.data.message, categories: [] });
@@ -134,7 +134,7 @@ export const useProductStore = create((set, get) => ({
 
 		try {
 			const { formData } = get();
-			await axios.post(`${BASE_URL}/api/categories`, formData);
+			await apiClient.post(`${BASE_URL}/api/categories`, formData);
 			document.getElementById("add-category-modal").close();
 			await get().fetchCategories();
 			get().resetForm();
@@ -151,7 +151,7 @@ export const useProductStore = create((set, get) => ({
 	deleteCategory: async (id) => {
 		set({ loading: true });
 		try {
-			await axios.delete(`${BASE_URL}/api/categories/${id}`);
+			await apiClient.delete(`${BASE_URL}/api/categories/${id}`);
 			set((prev) => ({
 				categories: prev.categories.filter((category) => category.id !== id),
 			}));

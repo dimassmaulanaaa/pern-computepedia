@@ -1,11 +1,12 @@
-import { Link, useResolvedPath } from "react-router-dom";
-import { LaptopMinimal, ShoppingCart } from "lucide-react";
+import { Link } from "react-router-dom";
+import { LaptopMinimal, LogOut } from "lucide-react";
 
 import ThemeSelector from "./ThemeSelector";
 
+import { useAuthStore } from "../store/useAuthStore";
+
 function Navbar() {
-	const { pathname } = useResolvedPath();
-	const isHomePage = pathname === "/";
+	const { userLogout } = useAuthStore();
 
 	return (
 		<div className="bg-base-100/80 backdrop-blur-lg border-b border-base-content/10 sticky top-0 z-50">
@@ -27,14 +28,12 @@ function Navbar() {
 					<div className="flex items-center gap-4">
 						<ThemeSelector />
 
-						{isHomePage && (
-							<div className="indicator">
-								<div className="p-2 rounded-full hover:bg-base-200 transition-colors">
-									<ShoppingCart className="size-5" />
-									<span className="badge badge-sm badge-primary indicator-item">5</span>
-								</div>
-							</div>
-						)}
+						<form onSubmit={userLogout}>
+							<button type="submit" className="btn btn-ghost">
+								<LogOut className="size-5" />
+								Logout
+							</button>
+						</form>
 					</div>
 				</div>
 			</div>
