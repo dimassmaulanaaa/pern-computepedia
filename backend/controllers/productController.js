@@ -36,13 +36,21 @@ export const getProduct = async (req, res) => {
 
 export const createProduct = async (req, res) => {
 	const { name, price, stock, description, image, category_id } = req.body;
+	const productPayload = {
+		name: name.trim(),
+		price: price,
+		stock: stock,
+		description: description.trim(),
+		image: image.trim(),
+		category_id: category_id,
+	};
 
 	if (!name.trim() || !price || !stock || !description.trim() || !image.trim() || !category_id) {
 		return res.status(400).json({ success: false, message: "All fields cannot be empty" });
 	}
 
 	try {
-		const createdProduct = await productModel.create({ name, price, stock, description, image, category_id });
+		const createdProduct = await productModel.create(productPayload);
 		res.status(201).json({ success: true, data: createdProduct });
 	} catch (error) {
 		console.log("Error createProduct", error);
@@ -53,20 +61,21 @@ export const createProduct = async (req, res) => {
 export const updateProduct = async (req, res) => {
 	const { id } = req.params;
 	const { name, price, stock, description, image, category_id } = req.body;
+	const productPayload = {
+		name: name.trim(),
+		price: price,
+		stock: stock,
+		description: description.trim(),
+		image: image.trim(),
+		category_id: category_id,
+	};
 
 	if (!name.trim() || !price || !stock || !description.trim() || !image.trim() || !category_id) {
 		return res.status(400).json({ success: false, message: "All fields cannot be empty" });
 	}
 
 	try {
-		const updatedProduct = await productModel.update(id, {
-			name,
-			price,
-			stock,
-			description,
-			image,
-			category_id,
-		});
+		const updatedProduct = await productModel.update(id, productPayload);
 
 		if (!updatedProduct) {
 			return res.status(404).json({ success: false, message: "Product not found" });

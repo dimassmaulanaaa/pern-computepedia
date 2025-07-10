@@ -12,6 +12,7 @@ export const getCategories = async (_, res) => {
 
 export const createCategory = async (req, res) => {
 	const { name } = req.body;
+	const categoryPayload = { name: name.trim() };
 
 	if (!name.trim()) {
 		return res.status(400).json({
@@ -21,7 +22,7 @@ export const createCategory = async (req, res) => {
 	}
 
 	try {
-		const createdCategory = await categoryModel.create({ name });
+		const createdCategory = await categoryModel.create(categoryPayload);
 		res.status(201).json({ success: true, data: createdCategory });
 	} catch (error) {
 		console.log("error createCategory", error);

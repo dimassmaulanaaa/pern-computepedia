@@ -4,19 +4,24 @@ import { UserModel } from "../models/userModel.js";
 
 export const registerUser = async (req, res) => {
 	const { username, name, password } = req.body;
+	const userPayload = {
+		username: username.trim(),
+		name: name.trim(),
+		password: password,
+	};
 
-	if (!username.trim() || !name.trim() || !password.trim()) {
+	if (!username.trim() || !name.trim() || !password) {
 		return res.status(400).json({ success: false, message: "All fields cannot be empty" });
 	}
 
 	try {
-		const userExists = await UserModel.findByUsername(username);
+		const userExists = await UserModel.findByUsername(username.trim());
 
 		if (userExists) {
 			return res.status(409).json({ success: false, message: "Username already exists" });
 		}
 
-		const createdUser = await UserModel.create({ username, name, password });
+		const createdUser = await UserModel.create(userPayload);
 		res.status(201).json({ success: true, data: createdUser });
 	} catch (error) {
 		console.log("Error registerUser", error);
