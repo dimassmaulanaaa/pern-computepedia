@@ -3,6 +3,8 @@ import toast from "react-hot-toast";
 
 import apiClient from "../lib/axios";
 
+import { useAuthStore } from "./useAuthStore";
+
 const BASE_URL = "http://localhost:3000";
 
 export const useProductStore = create((set, get) => ({
@@ -72,7 +74,12 @@ export const useProductStore = create((set, get) => ({
 		set({ loading: true });
 		try {
 			const { formData } = get();
-			await apiClient.post(`${BASE_URL}/api/products`, formData);
+			const { user } = useAuthStore.getState();
+			const productPayload = {
+				...formData,
+				user_id: user.id,
+			};
+			await apiClient.post(`${BASE_URL}/api/products`, productPayload);
 			document.getElementById("add-product-modal").close();
 			await get().fetchProducts();
 			get().resetForm();
@@ -88,7 +95,12 @@ export const useProductStore = create((set, get) => ({
 		set({ loading: true });
 		try {
 			const { formData } = get();
-			const response = await apiClient.put(`${BASE_URL}/api/products/${id}`, formData);
+			const { user } = useAuthStore.getState();
+			const productPayload = {
+				...formData,
+				user_id: user.id,
+			};
+			const response = await apiClient.put(`${BASE_URL}/api/products/${id}`, productPayload);
 			set({ currentProduct: response.data.data });
 			toast.success("Product updated successfully");
 		} catch (error) {
