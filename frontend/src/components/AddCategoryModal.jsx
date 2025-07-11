@@ -13,7 +13,7 @@ function AddCategoryModal() {
 		error,
 		formData,
 		setFormData,
-		resetForm,
+		closeModal,
 		fetchCategories,
 		addCategory,
 		deleteCategory,
@@ -96,11 +96,17 @@ function AddCategoryModal() {
 
 					{/* MODAL ACTIONS */}
 					<div className="modal-action">
-						<form method="dialog">
-							<button className="btn btn-ghost" onClick={resetForm}>
-								Cancel
-							</button>
-						</form>
+						{/* <form method="dialog"> */}
+						<button
+							type="button"
+							className="btn btn-ghost"
+							onClick={() => {
+								closeModal("add-category-modal");
+							}}
+						>
+							Cancel
+						</button>
+						{/* </form> */}
 						<button
 							type="submit"
 							className="btn btn-primary min-w-[120px]"

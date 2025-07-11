@@ -6,7 +6,7 @@ import { useProductStore } from "../store/useProductStore";
 import LoadingSpinnerOnButton from "./LoadingSpinnerOnButton";
 
 function AddProductModal() {
-	const { categories, loading, formData, setFormData, resetForm, addProduct, fetchCategories } =
+	const { categories, loading, formData, setFormData, closeModal, addProduct, fetchCategories } =
 		useProductStore();
 
 	useEffect(() => {
@@ -152,11 +152,17 @@ function AddProductModal() {
 
 					{/* MODAL ACTIONS */}
 					<div className="modal-action">
-						<form method="dialog">
-							<button className="btn btn-ghost" onClick={resetForm}>
-								Cancel
-							</button>
-						</form>
+						{/* <form method="dialog"> */}
+						<button
+							type="button"
+							className="btn btn-ghost"
+							onClick={() => {
+								closeModal("add-product-modal");
+							}}
+						>
+							Cancel
+						</button>
+						{/* </form> */}
 						<button
 							type="submit"
 							className="btn btn-primary min-w-[120px]"

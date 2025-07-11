@@ -38,6 +38,11 @@ export const useProductStore = create((set, get) => ({
 			},
 		}),
 
+	closeModal: (modalId) => {
+		document.getElementById(modalId).close();
+		get().resetForm();
+	},
+
 	// PRODUCTS
 	fetchProducts: async (searchTerm = "") => {
 		set({ loading: true });
