@@ -35,13 +35,14 @@ export const getProduct = async (req, res) => {
 };
 
 export const createProduct = async (req, res) => {
-	const { name, price, stock, description, image, category_id } = req.body;
+	const { name, price, stock, description, image, user_id, category_id } = req.body;
 	const productPayload = {
 		name: name.trim(),
 		price: price,
 		stock: stock,
 		description: description.trim(),
 		image: image.trim(),
+		user_id: user_id,
 		category_id: category_id,
 	};
 
@@ -60,13 +61,14 @@ export const createProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
 	const { id } = req.params;
-	const { name, price, stock, description, image, category_id } = req.body;
+	const { name, price, stock, description, image, user_id, category_id } = req.body;
 	const productPayload = {
 		name: name.trim(),
 		price: price,
 		stock: stock,
 		description: description.trim(),
 		image: image.trim(),
+		user_id: user_id,
 		category_id: category_id,
 	};
 

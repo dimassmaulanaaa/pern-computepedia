@@ -25,19 +25,19 @@ export const productModel = {
 		return product[0];
 	},
 
-	async create({ name, price, stock, description, image, category_id }) {
+	async create({ name, price, stock, description, image, user_id, category_id }) {
 		const createdProduct = await sql`
-      INSERT INTO products (name, price, stock, description, image, category_id)
-      VALUES (${name}, ${price}, ${stock}, ${description}, ${image}, ${category_id})
+      INSERT INTO products (name, price, stock, description, image, user_id, category_id)
+      VALUES (${name}, ${price}, ${stock}, ${description}, ${image}, ${user_id}, ${category_id})
       RETURNING *
     `;
 		return createdProduct[0];
 	},
 
-	async update(id, { name, price, stock, description, image, category_id }) {
+	async update(id, { name, price, stock, description, image, user_id, category_id }) {
 		const updatedProduct = await sql`
       UPDATE products
-      SET name = ${name}, price = ${price}, stock = ${stock}, description = ${description}, image = ${image}, category_id = ${category_id}
+      SET name = ${name}, price = ${price}, stock = ${stock}, description = ${description}, image = ${image}, user_id=${user_id}, category_id = ${category_id}
       WHERE id = ${id}
       RETURNING *
     `;
