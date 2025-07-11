@@ -49,7 +49,7 @@ function EditProductCard() {
 	return (
 		<div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
 			{/* PRODUCT IMAGE */}
-			<div className="overflow-hidden shadow-lg bg-base-100 rounded-box">
+			<div className="overflow-hidden shadow-lg bg-base-100 rounded-box aspect-square">
 				<img src={currentProduct?.image} alt={currentProduct?.name} className="size-full object-cover" />
 			</div>
 
