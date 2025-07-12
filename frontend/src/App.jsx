@@ -8,6 +8,7 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import EditProductPage from "./pages/EditProductPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
 	return (
@@ -24,6 +25,8 @@ function App() {
 					<Route index element={<HomePage />} />
 					<Route path="edit-product/:id" element={<EditProductPage />} />
 				</Route>
+
+				<Route path="*" element={<NotFoundPage />} />
 			</Routes>
 
 			<Toaster />
