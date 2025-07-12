@@ -20,6 +20,7 @@ function LoginPage() {
 				<div className="card-body">
 					<h2 className="card-title justify-center text-2xl">Login</h2>
 					<form onSubmit={handleSubmit} className="space-y-4">
+						{/* USER USERNAME INPUT */}
 						<div className="form-control">
 							<label className="label">
 								<span className="label-text">Username</span>
@@ -28,10 +29,14 @@ function LoginPage() {
 								type="text"
 								placeholder="Enter your username"
 								className="input input-bordered"
+								pattern="^[a-z0-9_]+$"
+								title="Username can only contain lowercase letters, numbers, and underscores."
 								value={formData.username}
 								onChange={(e) => setFormData({ ...formData, username: e.target.value })}
 							/>
 						</div>
+
+						{/* USER PASSWORD INPUT */}
 						<div className="form-control">
 							<label className="label">
 								<span className="label-text">Password</span>
@@ -44,6 +49,8 @@ function LoginPage() {
 								onChange={(e) => setFormData({ ...formData, password: e.target.value })}
 							/>
 						</div>
+
+						{/* FORM ACTIONS */}
 						<div className="form-control mt-6">
 							<button type="submit" className="btn btn-primary" disabled={loading}>
 								{loading ? <span className="loading loading-spinner"></span> : "Login"}

@@ -20,6 +20,7 @@ function RegisterPage() {
 				<div className="card-body">
 					<h2 className="card-title justify-center text-2xl">Register</h2>
 					<form onSubmit={handleSubmit} className="space-y-4">
+						{/* USER NAME INPUT */}
 						<div className="form-control">
 							<label className="label">
 								<span className="label-text">Full Name</span>
@@ -32,6 +33,8 @@ function RegisterPage() {
 								onChange={(e) => setFormData({ ...formData, name: e.target.value })}
 							/>
 						</div>
+
+						{/* USER USERNAME INPUT */}
 						<div className="form-control">
 							<label className="label">
 								<span className="label-text">Username</span>
@@ -40,10 +43,14 @@ function RegisterPage() {
 								type="text"
 								placeholder="Choose a username"
 								className="input input-bordered"
+								pattern="^[a-z0-9_]+$"
+								title="Username can only contain lowercase letters, numbers, and underscores."
 								value={formData.username}
 								onChange={(e) => setFormData({ ...formData, username: e.target.value })}
 							/>
 						</div>
+
+						{/* USER PASSWORD INPUT */}
 						<div className="form-control">
 							<label className="label">
 								<span className="label-text">Password</span>
@@ -56,6 +63,8 @@ function RegisterPage() {
 								onChange={(e) => setFormData({ ...formData, password: e.target.value })}
 							/>
 						</div>
+
+						{/* FORM ACTIONS */}
 						<div className="form-control mt-6">
 							<button type="submit" className="btn btn-primary" disabled={loading}>
 								{loading ? <span className="loading loading-spinner"></span> : "Register"}
